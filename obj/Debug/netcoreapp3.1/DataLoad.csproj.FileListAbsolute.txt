@@ -1,0 +1,11 @@
+c:\Users\Steve\Documents\ICICORDATA\DataLoad\bin\Debug\netcoreapp3.1\DataLoad.exe
+C:\Users\Steve\Documents\ICICORDATA\DataLoad\bin\Debug\netcoreapp3.1\DataLoad.deps.json
+C:\Users\Steve\Documents\ICICORDATA\DataLoad\bin\Debug\netcoreapp3.1\DataLoad.runtimeconfig.json
+C:\Users\Steve\Documents\ICICORDATA\DataLoad\bin\Debug\netcoreapp3.1\DataLoad.runtimeconfig.dev.json
+c:\Users\Steve\Documents\ICICORDATA\DataLoad\bin\Debug\netcoreapp3.1\DataLoad.dll
+c:\Users\Steve\Documents\ICICORDATA\DataLoad\bin\Debug\netcoreapp3.1\DataLoad.pdb
+c:\Users\Steve\Documents\ICICORDATA\DataLoad\obj\Debug\netcoreapp3.1\DataLoad.csprojAssemblyReference.cache
+c:\Users\Steve\Documents\ICICORDATA\DataLoad\obj\Debug\netcoreapp3.1\DataLoad.AssemblyInfoInputs.cache
+c:\Users\Steve\Documents\ICICORDATA\DataLoad\obj\Debug\netcoreapp3.1\DataLoad.AssemblyInfo.cs
+c:\Users\Steve\Documents\ICICORDATA\DataLoad\obj\Debug\netcoreapp3.1\DataLoad.dll
+c:\Users\Steve\Documents\ICICORDATA\DataLoad\obj\Debug\netcoreapp3.1\DataLoad.pdb
