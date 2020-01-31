@@ -6,7 +6,12 @@ namespace DataLoad
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            
+            Read read = new Read(); 
+            Console.WriteLine("Ingrese el enlace del documento");
+             read.ReadFolder(@"C:\Users\Steve\Desktop\bdIcicor");  
+            // var file = read.ReadTxt(Console.ReadLine());  
+            // read.BuildTable(@"C:\Users\Steve\Desktop\bdIcicor\test.txt", Names.PDT01); 
         }
     }
 }
