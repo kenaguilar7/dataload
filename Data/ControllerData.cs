@@ -13,7 +13,7 @@ namespace DataLoad.Data {
             _controller = new SqlConnection();
         }
 
-        public int Ejecutar (String sqlString, CommandType type, List<Parametro> lst) {
+        public int Ejecutar (String sqlString, CommandType type, IEnumerable<Parametro> lst) {
 
             using (SqlConnection connection = _controller)
             using (SqlTransaction tr = connection.BeginTransaction (IsolationLevel.Serializable))

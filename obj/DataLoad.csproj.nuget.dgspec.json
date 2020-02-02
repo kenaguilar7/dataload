@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Steve\\Documents\\ICICORDATA\\DataLoad\\DataLoad.csproj": {}
+    "C:\\Users\\Steve\\Documents\\Proyectos\\ICICOR\\DataLoad\\DataLoad.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Steve\\Documents\\ICICORDATA\\DataLoad\\DataLoad.csproj": {
+    "C:\\Users\\Steve\\Documents\\Proyectos\\ICICOR\\DataLoad\\DataLoad.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Steve\\Documents\\ICICORDATA\\DataLoad\\DataLoad.csproj",
+        "projectUniqueName": "C:\\Users\\Steve\\Documents\\Proyectos\\ICICOR\\DataLoad\\DataLoad.csproj",
         "projectName": "DataLoad",
-        "projectPath": "C:\\Users\\Steve\\Documents\\ICICORDATA\\DataLoad\\DataLoad.csproj",
+        "projectPath": "C:\\Users\\Steve\\Documents\\Proyectos\\ICICOR\\DataLoad\\DataLoad.csproj",
         "packagesPath": "C:\\Users\\Steve\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Steve\\Documents\\ICICORDATA\\DataLoad\\obj\\",
+        "outputPath": "C:\\Users\\Steve\\Documents\\Proyectos\\ICICOR\\DataLoad\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
