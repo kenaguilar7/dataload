@@ -1,4 +1,5 @@
 using System;
+using System.Linq; 
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,14 +11,13 @@ namespace DataLoad.Data {
         private SqlConnection _controller { get; set; }
 
         public ControllerData () {
-            _controller = new SqlConnection();
+            _controller = new SqlConnection("");
         }
 
         public int Ejecutar (String sqlString, CommandType type, IEnumerable<Parametro> lst) {
 
             using (SqlConnection connection = _controller)
-            using (SqlTransaction tr = connection.BeginTransaction (IsolationLevel.Serializable))
-            using (SqlCommand command = new SqlCommand (sqlString, connection, tr)) {
+            using (SqlCommand command = new SqlCommand (sqlString, connection)) {
 
                 connection.Open ();
 
@@ -28,11 +28,12 @@ namespace DataLoad.Data {
                     }
 
                     var retorno = command.ExecuteNonQuery ();
-                    tr.Commit ();
+                    // tr.Commit ();
                     return retorno;
 
                 } catch (Exception ex) {
-                    tr.Rollback ();
+                    var toSave = from l in lst select new { value = l.valor.ToString()}; 
+                    LogWriter log = new LogWriter ($"SqlError:{string.Join(",",toSave)}");
                     throw ex;
                 }
             
@@ -41,9 +42,7 @@ namespace DataLoad.Data {
         }
 
         public int Ejecutar (String sqlString, CommandType type, Parametro parametro) {
-
             return Ejecutar (sqlString, type, new List<Parametro> { parametro });
-
         }
 
         public bool ReadTable () {

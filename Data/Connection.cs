@@ -1,257 +1,43 @@
 using System;
+using System.Linq; 
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 
 namespace DataLoad.Data {
 
     public class Connection {
 
-        public void InserRow (string[] row, Names tableName) {
+        public void InserRow (Names tableName,IEnumerable<Parametro> lstParams) {
 
-            var sqlString = GetSql (tableName);
-            var sqlParams = BuildParams (tableName);
+            var sqlString = GetSql (tableName, lstParams.ToList());
             ControllerData ctda = new ControllerData ();
             try {
 
-                var rSaved = ctda.Ejecutar (sqlString, CommandType.Text, sqlParams);
+                var rSaved = ctda.Ejecutar (sqlString, CommandType.Text, lstParams);
                 
-            } catch (Exception) {
-                // Save log
+            } catch (Exception ex) {
+                throw ex; 
             }
 
         }
+        public void SaveLog(String data, DataTable tableName){
+            string createText = $"{data} + {Environment.NewLine}";
 
-        public string GetSql (Names tableName) {
+            File.WriteAllText(data, createText);
+        }
 
-            var _sqlString = $"INSERT INTO {tableName.ToString()} VALUES ({GetSqlInsert(tableName)})";
+        private string GetSql (Names tableName, List<Parametro> lstParams) {
+
+            var _sqlString = $"INSERT INTO {tableName.ToString()} ({GetSqlString(lstParams)}) VALUES ({GetSqlStringAndParamsAt(lstParams)})";
             return _sqlString;
         }
 
-        public string GetSqlInsert (Names tableName) {
-
-            switch (tableName) {
-                case Names.PDT01:
-                    return "";
-                case Names.PDT02:
-                    return "";
-                case Names.PFT01:
-                    return "";
-                case Names.PFT02:
-                    return "";
-                case Names.PFT03:
-                    return "";
-                case Names.PFT04:
-                    return "";
-                case Names.PFT05:
-                    return "";
-                case Names.PPT01:
-                    return "";
-                case Names.PGT01:
-                    return "";
-                case Names.PGT02:
-                    return "";
-                case Names.PGT03:
-                    return "";
-                case Names.PHT02:
-                    return "";
-                case Names.PITC03:
-                    return "";
-                case Names.PITC04:
-                    return "";
-                case Names.PITC05:
-                    return "";
-                case Names.PITC08:
-                    return "";
-                case Names.PITC09:
-                    return "";
-                case Names.PITC10:
-                    return "";
-                case Names.PITC11:
-                    return "";
-                case Names.PITC12:
-                    return "";
-                case Names.PITC13:
-                    return "";
-                case Names.PITC15:
-                    return "";
-                case Names.PIT01:
-                    return "";
-                case Names.PIT04:
-                    return "";
-                case Names.PDTC01:
-                    return "";
-                case Names.PDTC12:
-                    return "";
-                default:
-                    return "";
-            }
+        public string GetSqlString(List<Parametro> lstParams, bool useAt = false){
+            var delimeter = (useAt)? "@":","; 
+            return string.Join(delimeter, lstParams); 
         }
-        private IEnumerable<Parametro> BuildParams (Names tableName) {
-
-            switch (tableName) {
-                case Names.PDT01:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-
-                case Names.PDT02:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PFT01:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PFT02:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PFT03:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PFT04:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PFT05:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PPT01:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PGT01:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PGT02:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PGT03:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PHT02:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC03:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC04:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC05:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC08:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC09:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC10:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC11:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC12:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC13:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PITC15:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PIT01:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PIT04:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PDTC01:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                case Names.PDTC12:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                        new Parametro ("@od", 3),
-                    };
-                default:
-                    return new List<Parametro> {
-                        new Parametro ("@od", 3)
-                    };
-            }
-
-        }
+        public string GetSqlStringAndParamsAt(List<Parametro> lstParams)=>GetSqlString(lstParams, useAt: true);
+      
     }
 }

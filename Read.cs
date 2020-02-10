@@ -1,46 +1,61 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using DataLoad.Data;
 
-namespace DataLoad
-{
- public class Read {
-        public void ReadFolder (string path) {
+namespace DataLoad {
+    public class Read {
+
+        private readonly Connection connection = new Connection ();
+
+        public void ReadFolder (string filePath, string tableFilePath) {
 
             for (int i = 0; i < Enum.GetNames (typeof (Names)).Length; i++) {
 
                 Names CurrFile = (Names) i;
-               
-                var CurrPath = @$"{path}\{CurrFile}.txt";
+
+                var CurrPath = @$"{filePath}\{CurrFile}.txt";
 
                 if (System.IO.File.Exists (CurrPath)) {
-                    BuildTable (CurrPath, CurrFile);
+
+                    BuildTable (CurrPath,tableFilePath, CurrFile);
+
                 } else {
                     Console.WriteLine ($"No se encontro la ruta {CurrPath}");
-                    //Save in logs
+                    LogWriter log = new LogWriter ($"no se encontro el archivo {(i)}");
                 }
             }
         }
 
-        public void BuildTable (string path, Names tablename) {
+        public void BuildTable (string dataFilePath,string tableFilePath,  Names tablename) {
 
-            var ColumZise = VerifyColumns (tablename);
+            var lstParam = BuildParams (tablename,tableFilePath);
 
-            using (StreamReader sr = File.OpenText (path)) {
-                string s = String.Empty;
-                while ((s = sr.ReadLine ()) != null) {
-                    ///Mandamos a convertir linea por linea a columnas
-                    var columns = GetColumns (s);
+            using (StreamReader sr = File.OpenText (dataFilePath)) {
+                string line = String.Empty;
+                while ((line = sr.ReadLine ()) != null) {
+                    
+                    var columns = GetColumns (line, lstParam);
 
-                    if (columns.Length == ColumZise) {
-                        ///inset into database
+                    if (columns.Length == lstParam.Count) {
+                        connection.InserRow (tablename, FillParams(lstParam, columns));
                     } else {
-                        Console.WriteLine ("Error");
+                        LogWriter log = new LogWriter ($"columna:{tablename.ToString()}:{line}");
                     }
                 }
             }
 
         }
-        public String[] GetColumns (string line) {
+
+        public IEnumerable<Parametro> FillParams (List<Parametro> lstParam, string[] lstValues) {
+            
+            lstParam.ForEach (x => {
+                x.valor = lstValues[lstParam.IndexOf (x)];
+            });
+            return lstParam;
+        }
+
+        public String[] GetColumns (string line, IEnumerable<Parametro> List = null) {
 
             try {
 
@@ -52,66 +67,24 @@ namespace DataLoad
                 return new string[0];
             }
         }
+        public List<Parametro> BuildParams (Names tableName, string tableFilePath) {
 
-        private int VerifyColumns (Names tablename) {
+            var retorno = new List<Parametro> ();
+            
+            using (StreamReader sr = File.OpenText ($"{tableFilePath}")) {
+                string s = String.Empty;
+                while ((s = sr.ReadLine ()) != null) {
 
-            switch (tablename) {
-                case Names.PDT01:
-                    return 0;
-                case Names.PDT02:
-                    return 14;
-                case Names.PFT01:
-                    return 0;
-                case Names.PFT02:
-                    return 0;
-                case Names.PFT03:
-                    return 0;
-                case Names.PFT04:
-                    return 0;
-                case Names.PFT05:
-                    return 0;
-                case Names.PPT01:
-                    return 0;
-                case Names.PGT01:
-                    return 0;
-                case Names.PGT02:
-                    return 13;
-                case Names.PGT03:
-                    return 0;
-                case Names.PHT02:
-                    return 0;
-                case Names.PITC03:
-                    return 0;
-                case Names.PITC04:
-                    return 0;
-                case Names.PITC05:
-                    return 0;
-                case Names.PITC08:
-                    return 0;
-                case Names.PITC09:
-                    return 0;
-                case Names.PITC10:
-                    return 0;
-                case Names.PITC11:
-                    return 0;
-                case Names.PITC12:
-                    return 0;
-                case Names.PITC13:
-                    return 0;
-                case Names.PITC15:
-                    return 0;
-                case Names.PIT01:
-                    return 0;
-                case Names.PIT04:
-                    return 0;
-                case Names.PDTC01:
-                    return 0;
-                case Names.PDTC12:
-                    return 0;
-                default:
-                    return 0;
+                    var line = GetColumns (s);
+                    if (line != null && line[0] == tableName.ToString ()) {
+                        for (int i = 1; i < line.Length; i++) {
+                            retorno.Add (new Parametro ($"@{line[i].ToString()}"));
+                        }
+                        return retorno;
+                    }
+                }
             }
-
+            return retorno;
         }
 
     }

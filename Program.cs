@@ -7,20 +7,15 @@ namespace DataLoad
     {
         static void Main(string[] args)
         {
+            Read read = new Read(); 
+            Console.WriteLine("Ingrese el enlace del documento");
+            var folderDataPath = Console.ReadLine(); 
+
+            Console.WriteLine("Ingrese el enlace del documento con el nombre de las tablas y sus columnas");
+            var folderTablePath = Console.ReadLine(); 
             
-           ControllerData controller = new ControllerData(); 
-            // --- TestConnection
-            // controller.IsServerConnected(); 
-            // Console.WriteLine(controller.IsServerConnected());
-
-            // Read read = new Read(); 
-            // Console.WriteLine("Ingrese el enlace del documento");
-            //  read.ReadFolder(@"C:\Users\Steve\Desktop\bdIcicor");  
-            // var file = read.ReadTxt(Console.ReadLine());  
-            // read.BuildTable(@"C:\Users\Steve\Desktop\bdIcicor\test.txt", Names.PDT01); 
-            Console.WriteLine("test"); 
-
-
+            read.ReadFolder(@folderDataPath,@folderTablePath);  
+            
         }
     }
 }
