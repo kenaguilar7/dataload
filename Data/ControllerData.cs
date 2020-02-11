@@ -11,11 +11,11 @@ namespace DataLoad.Data {
         private SqlConnection _controller { get; set; }
 
         public ControllerData () {
-            _controller = new SqlConnection("");
+            _controller = new SqlConnection();
         }
 
-        public int Ejecutar (String sqlString, CommandType type, IEnumerable<Parametro> lst) {
-
+        public void Ejecutar (String sqlString, CommandType type, IEnumerable<Parametro> lst) {
+            
             using (SqlConnection connection = _controller)
             using (SqlCommand command = new SqlCommand (sqlString, connection)) {
 
@@ -27,22 +27,23 @@ namespace DataLoad.Data {
                         command.Parameters.AddWithValue (item.nombre, item.valor);
                     }
 
-                    var retorno = command.ExecuteNonQuery ();
-                    // tr.Commit ();
-                    return retorno;
+                    if(command.ExecuteNonQuery() == 0){
+                        throw new Exception(); 
+                    }else{
+                        Console.WriteLine("--");
+                    }
 
-                } catch (Exception ex) {
-                    var toSave = from l in lst select new { value = l.valor.ToString()}; 
+                } catch (Exception) {
+                    var toSave = from l in lst select l.valor.ToString(); 
                     LogWriter log = new LogWriter ($"SqlError:{string.Join(",",toSave)}");
-                    throw ex;
                 }
             
             }
 
         }
 
-        public int Ejecutar (String sqlString, CommandType type, Parametro parametro) {
-            return Ejecutar (sqlString, type, new List<Parametro> { parametro });
+        public void Ejecutar (String sqlString, CommandType type, Parametro parametro) {
+             Ejecutar (sqlString, type, new List<Parametro> { parametro });
         }
 
         public bool ReadTable () {

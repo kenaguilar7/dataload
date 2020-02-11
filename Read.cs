@@ -22,7 +22,7 @@ namespace DataLoad {
 
                 } else {
                     Console.WriteLine ($"No se encontro la ruta {CurrPath}");
-                    LogWriter log = new LogWriter ($"no se encontro el archivo {(i)}");
+                    LogWriter log = new LogWriter ($"no se encontro el archivo {CurrPath.ToString()} en la ruta {filePath}");
                 }
             }
         }
@@ -40,7 +40,7 @@ namespace DataLoad {
                     if (columns.Length == lstParam.Count) {
                         connection.InserRow (tablename, FillParams(lstParam, columns));
                     } else {
-                        LogWriter log = new LogWriter ($"columna:{tablename.ToString()}:{line}");
+                        LogWriter log = new LogWriter ($"diferenciatamaniocolumna:{tablename.ToString()}:{line}");
                     }
                 }
             }

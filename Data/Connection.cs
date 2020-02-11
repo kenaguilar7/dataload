@@ -13,8 +13,9 @@ namespace DataLoad.Data {
             var sqlString = GetSql (tableName, lstParams.ToList());
             ControllerData ctda = new ControllerData ();
             try {
-
-                var rSaved = ctda.Ejecutar (sqlString, CommandType.Text, lstParams);
+                
+                Console.WriteLine("|");
+                ctda.Ejecutar (sqlString, CommandType.Text, lstParams);
                 
             } catch (Exception ex) {
                 throw ex; 
@@ -29,15 +30,25 @@ namespace DataLoad.Data {
 
         private string GetSql (Names tableName, List<Parametro> lstParams) {
 
-            var _sqlString = $"INSERT INTO {tableName.ToString()} ({GetSqlString(lstParams)}) VALUES ({GetSqlStringAndParamsAt(lstParams)})";
+            var _sqlString = $"INSERT INTO {tableName.ToString()} ({GetSqlString(lstParams)}) VALUES ({GetSqlString(lstParams, useAt: true)})";
             return _sqlString;
         }
 
         public string GetSqlString(List<Parametro> lstParams, bool useAt = false){
-            var delimeter = (useAt)? "@":","; 
-            return string.Join(delimeter, lstParams); 
+            var delimeter = (useAt)? ",@":","; 
+            // var lst = from n in lstParams select  n.nombre.Remove(0,1);
+            var lst = from n in lstParams select  GetValueString(lstParams.FirstOrDefault(), n);
+
+            string GetValueString(Parametro firstInList, Parametro curr){
+                    if (firstInList.Equals(curr) && useAt)
+                        return curr.nombre; 
+                    else
+                        return curr.nombre.Remove(0,1); 
+            }; 
+
+            return string.Join(delimeter, lst); 
         }
-        public string GetSqlStringAndParamsAt(List<Parametro> lstParams)=>GetSqlString(lstParams, useAt: true);
+        // public string GetSqlStringAndParamsAt(List<Parametro> lstParams)=>GetSqlString(lstParams, useAt: true);
       
     }
 }
